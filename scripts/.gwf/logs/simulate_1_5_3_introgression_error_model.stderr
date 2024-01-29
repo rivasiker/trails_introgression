@@ -1,0 +1,2 @@
+2024-01-26 20:38:01,191	INFO worker.py:1715 -- Started a local Ray instance. View the dashboard at [1m[32mhttp://127.0.0.1:8268 [39m[22m
+slurmstepd-hpc026: error: *** JOB 33604 ON hpc026 CANCELLED AT 2024-01-29T16:41:37 ***
