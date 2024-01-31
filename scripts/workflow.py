@@ -41,7 +41,7 @@ for n_int_AB in [1]:
                 outputs=['../results/{}_{}_{}_{}_{}.csv'.format(x, n_int_AB, n_int_ABC, seed, model) for x in ['sim']],
                 cores=1 if n_int_ABC == 1 else 8,
                 memory='{}g'.format(n_int_ABC*4),
-                walltime= '{}:00:00'.format(dct[n_int_ABC]),
+                walltime= 'UNLIMITED',
                 account='Primategenomes') << f"""
             python optimize_introgression.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m}
             """

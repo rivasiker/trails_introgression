@@ -1,1 +1,9 @@
-2024-01-26 20:43:31,288	INFO worker.py:1715 -- Started a local Ray instance. View the dashboard at [1m[32mhttp://127.0.0.1:8265 [39m[22m
+2024-01-29 16:58:16,893	INFO worker.py:1715 -- Started a local Ray instance. View the dashboard at [1m[32mhttp://127.0.0.1:8266 [39m[22m
+/mnt/primevo/work/iker_rivas_gonzalez/programs/trails/src/trails/get_joint_prob_mat_introgression.py:312: RuntimeWarning: invalid value encountered in divide
+  final_AB_miss[5::], final_BC_miss[0:5]/sum(final_BC_miss[0:5]))
+/mnt/primevo/work/iker_rivas_gonzalez/programs/trails/src/trails/get_joint_prob_mat_introgression.py:318: RuntimeWarning: invalid value encountered in divide
+  final_AB_miss[5::]/sum(final_AB_miss[5::]), final_BC_miss[0:5])
+/mnt/primevo/work/iker_rivas_gonzalez/programs/trails/src/trails/get_joint_prob_mat_introgression.py:324: RuntimeWarning: invalid value encountered in divide
+  final_AB_miss[0:5], final_BC_miss[5::]/sum(final_BC_miss[5::]))
+/mnt/primevo/work/iker_rivas_gonzalez/programs/trails/src/trails/get_joint_prob_mat_introgression.py:330: RuntimeWarning: invalid value encountered in divide
+  final_AB_miss[0:5]/sum(final_AB_miss[0:5]), final_BC_miss[5::])
