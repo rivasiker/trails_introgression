@@ -28,7 +28,7 @@ t_B = t_1
 t_C = t_1+t_2
 
 model = 'introgression_error_model'
-
+algorithm = 'L-BFGS-B'
 for n_int_AB in [1]:
     for n_int_ABC in [1, 3, 5]:
         for seed in range(1, 6):
@@ -38,13 +38,27 @@ for n_int_AB in [1]:
             tot_lst.append('simulate_{}_{}_{}_{}'.format(n_int_AB, n_int_ABC, seed, model))
             gwf.target('simulate_{}_{}_{}_{}'.format(n_int_AB, n_int_ABC, seed, model),
                 inputs=['optimize_introgression.py'],
+                outputs=['../results/{}_{}_{}_{}_{}.csv'.format("sim", n_int_AB, n_int_ABC, seed, model)],
+                cores=1 if n_int_ABC == 1 else 8,
+                memory='{}g'.format(n_int_ABC*4),
+                walltime= 'UNLIMITED',
+                account='Primategenomes') << f"""
+            python optimize_introgression.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
+            """
+
+model = 'introgression_error_model_NM'
+algorithm = 'Nelder-Mead'
+for n_int_AB in [1]:
+    for n_int_ABC in [1, 3, 5]:
+        for seed in range(1, 6):
+            gwf.target('simulate_{}_{}_{}_{}'.format(n_int_AB, n_int_ABC, seed, model),
+                inputs=['optimize_introgression.py'],
                 outputs=['../results/{}_{}_{}_{}_{}.csv'.format(x, n_int_AB, n_int_ABC, seed, model) for x in ['sim']],
                 cores=1 if n_int_ABC == 1 else 8,
                 memory='{}g'.format(n_int_ABC*4),
                 walltime= 'UNLIMITED',
                 account='Primategenomes') << f"""
-            python optimize_introgression.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m}
+            python optimize_introgression.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
             """
 
-#[print(i, end = ' ') for i in tot_lst]
 

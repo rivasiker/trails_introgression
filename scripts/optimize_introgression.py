@@ -32,6 +32,8 @@ model = str(sys.argv[13])
 t_m = float(sys.argv[14])
 m = float(sys.argv[15])
 
+algorithm = str(sys.argv[16])
+
 t_C_prime = t_C-t_2
 t_1 = max([t_A, t_B, t_C_prime])
 t_out = t_1+t_2+t_3+2*N_ABC
@@ -209,7 +211,7 @@ res = optimizer_introgression(
     V_lst = [E], 
     res_name = f'../results/sim_{n_int_AB}_{n_int_ABC}_{seed}_{model}.csv', 
     header = False,
-    method = "L-BFGS-B"
+    method = algorithm
     )
 
 
