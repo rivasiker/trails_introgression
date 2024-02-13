@@ -3,8 +3,61 @@ Simulating demography
 Extracting features
 Optimizing
 t_m = 1.6e-05
-{'t_A': [5.22357838740964e-05, 2.61178919370482e-05, 0.0001044715677481928], 't_B': [4.482364654181676e-05, 2.241182327090838e-05, 8.964729308363352e-05], 't_C': [0.0007818360212122108, 0.0003909180106061054, 0.0015636720424244215], 't_2': [0.00045397595893587224, 0.00022698797946793612, 0.0009079519178717445], 't_upper': [0.004885683029730562, 0.002442841514865281, 0.009771366059461124], 't_m': [2.1063939574597004e-05, 0, 2.241182327090838e-05], 'N_AB': [0.0003272614076115007, 0.00016363070380575034, 0.0006545228152230013], 'N_ABC': [0.00035266906736557694, 0.00017633453368278847, 0.0007053381347311539], 'r': [0.5187603225837035, 0.25938016129185176, 1.037520645167407], 'm': [0.05, 0.0001, 0.9999]}
-Optimization terminated successfully.
-         Current function value: 14775747.701651
-         Iterations: 1460
-         Function evaluations: 2031
+9131
+{'t_A': [4.124170992567745e-05, 2.0620854962838725e-05, 8.24834198513549e-05], 't_B': [5.990023047164132e-05, 2.995011523582066e-05, 0.00011980046094328265], 't_C': [0.0005143609185414305, 0.00025718045927071524, 0.001028721837082861], 't_2': [3.309794851715566e-05, 1.654897425857783e-05, 6.619589703431132e-05], 't_upper': [0.004506337882933439, 0.0022531689414667195, 0.009012675765866878], 't_m': [1.8407224164389445e-05, 0, 2.995011523582066e-05], 'N_AB': [0.0005343777278194177, 0.00026718886390970887, 0.0010687554556388355], 'N_ABC': [0.000424733074746976, 0.000212366537373488, 0.000849466149493952], 'r': [0.41585903937844454, 0.08317180787568891, 2.0792951968922226], 'm': [0.05, 0.0001, 0.5]}
+RUNNING THE L-BFGS-B CODE
+
+           * * *
+
+Machine precision = 2.220D-16
+ N =           10     M =           10
+
+At X0         0 variables are exactly at the bounds
+
+At iterate    0    f=  1.47780D+07    |proj g|=  3.32687D-01
+
+At iterate    1    f=  1.47771D+07    |proj g|=  2.82085D-01
+
+At iterate    2    f=  1.47765D+07    |proj g|=  3.17342D-01
+
+At iterate    3    f=  1.47763D+07    |proj g|=  3.05131D-01
+
+At iterate    4    f=  1.47762D+07    |proj g|=  3.03012D-01
+
+At iterate    5    f=  1.47762D+07    |proj g|=  3.02833D-01
+
+At iterate    6    f=  1.47762D+07    |proj g|=  3.02489D-01
+
+At iterate    7    f=  1.47762D+07    |proj g|=  3.01936D-01
+
+At iterate    8    f=  1.47762D+07    |proj g|=  3.01340D-01
+
+At iterate    9    f=  1.47762D+07    |proj g|=  1.69583D+00
+
+At iterate   10    f=  1.47762D+07    |proj g|=  1.69501D+00
+
+At iterate   11    f=  1.47762D+07    |proj g|=  1.69353D+00
+
+At iterate   12    f=  1.47762D+07    |proj g|=  1.69298D+00
+
+At iterate   13    f=  1.47762D+07    |proj g|=  1.69306D+00
+
+At iterate   14    f=  1.47762D+07    |proj g|=  1.69307D+00
+
+           * * *
+
+Tit   = total number of iterations
+Tnf   = total number of function evaluations
+Tnint = total number of segments explored during Cauchy searches
+Skip  = number of BFGS updates skipped
+Nact  = number of active bounds at final generalized Cauchy point
+Projg = norm of the final projected gradient
+F     = final function value
+
+           * * *
+
+   N    Tit     Tnf  Tnint  Skip  Nact     Projg        F
+   10     14     17     27     0     5   1.693D+00   1.478D+07
+  F =   14776180.101958292     
+
+CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH             

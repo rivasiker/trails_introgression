@@ -1,0 +1,53 @@
+Model parameters
+Simulating demography
+Extracting features
+Optimizing
+t_m = 1.6e-05
+1467
+{'t_A': [4.5259034047009584e-05, 2.2629517023504792e-05, 9.051806809401917e-05], 't_B': [4.2036067936676394e-05, 2.1018033968338197e-05, 8.407213587335279e-05], 't_C': [0.0005046746101479751, 0.00025233730507398755, 0.0010093492202959502], 't_2': [7.287236556795582e-05, 3.643618278397791e-05, 0.00014574473113591164], 't_upper': [0.004117626116336248, 0.002058813058168124, 0.008235252232672496], 't_m': [1.3244898620251074e-05, 0, 2.1018033968338197e-05], 'N_AB': [0.00044172822011297094, 0.00022086411005648547, 0.0008834564402259419], 'N_ABC': [0.0005294997847884059, 0.00026474989239420296, 0.0010589995695768119], 'r': [0.2980493414343094, 0.05960986828686188, 1.490246707171547], 'm': [0.05, 0.0001, 0.5]}
+RUNNING THE L-BFGS-B CODE
+
+           * * *
+
+Machine precision = 2.220D-16
+ N =           10     M =           10
+
+At X0         0 variables are exactly at the bounds
+
+At iterate    0    f=  1.47690D+07    |proj g|=  2.38439D-01
+
+At iterate    1    f=  1.47688D+07    |proj g|=  2.23005D-01
+
+At iterate    2    f=  1.47685D+07    |proj g|=  1.20030D+00
+
+At iterate    3    f=  1.47685D+07    |proj g|=  1.19964D+00
+
+At iterate    4    f=  1.47684D+07    |proj g|=  1.19740D+00
+
+At iterate    5    f=  1.47684D+07    |proj g|=  1.19596D+00
+
+At iterate    6    f=  1.47684D+07    |proj g|=  1.19222D+00
+
+At iterate    7    f=  1.47684D+07    |proj g|=  1.19346D+00
+
+At iterate    8    f=  1.47684D+07    |proj g|=  1.19498D+00
+
+At iterate    9    f=  1.47684D+07    |proj g|=  1.19483D+00
+
+           * * *
+
+Tit   = total number of iterations
+Tnf   = total number of function evaluations
+Tnint = total number of segments explored during Cauchy searches
+Skip  = number of BFGS updates skipped
+Nact  = number of active bounds at final generalized Cauchy point
+Projg = norm of the final projected gradient
+F     = final function value
+
+           * * *
+
+   N    Tit     Tnf  Tnint  Skip  Nact     Projg        F
+   10      9     11     22     0     4   1.195D+00   1.477D+07
+  F =   14768424.697861793     
+
+CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH             
