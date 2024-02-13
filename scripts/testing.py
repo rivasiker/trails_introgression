@@ -17,7 +17,7 @@ seed = 1
 
 n_int_ABC = 1
 
-t_m = t_1-40_000/g
+t_m = t_1-54_000/g
 m = 0.05
 
 t_upper = t_3-cutpoints_ABC(n_int_ABC, 1/N_ABC)[-2]
@@ -34,46 +34,43 @@ N_AB = N_AB*mu
 N_ABC = N_ABC*mu
 r = r/mu
 
+fct_big = 25
+fct_sma = 2
+t_sd_A = t_A/fct_sma
+t_sd_B = t_B/fct_sma
+t_sd_C = t_C/fct_big
+t_sd_2 = t_2/fct_big
+t_sd_upper = t_2/fct_sma
+t_sd_m = t_m/fct_sma
+N_sd_AB = N_AB/fct_sma
+N_sd_ABC = N_ABC/fct_sma
+r_sd = r/fct_sma
+
 np.random.seed(seed)
-t_init_A = np.random.normal(t_A, t_A/5)
-t_init_B = np.random.normal(t_B, t_B/5)
-t_init_C = np.random.normal(t_C, t_C/5)
-t_init_2 = np.random.normal(t_2, t_2/5)
-t_init_upper = np.random.normal(t_upper, t_upper/5)
-t_init_m = np.random.normal(t_m, t_m/5)
-N_init_AB = np.random.normal(N_AB, N_AB/5)
-N_init_ABC = np.random.normal(N_ABC, N_ABC/5)
-r_init = np.random.normal(r, r/5)
-m_init = m
-
-# acc = 1
-# while (t_init_B/2 <= t_init_m) or ((t_init_C/2-t_init_2*2) <= t_init_m):
-#     np.random.seed(seed*10000+acc)
-#     t_init_A = np.random.normal(t_A, t_A/5)
-#     t_init_B = np.random.normal(t_B, t_B/5)
-#     t_init_C = np.random.normal(t_C, t_C/5)
-#     t_init_2 = np.random.normal(t_2, t_2/5)
-#     t_init_upper = np.random.normal(t_upper, t_upper/5)
-#     t_init_m = np.random.normal(t_m, t_m/5)
-#     N_init_AB = np.random.normal(N_AB, N_AB/5)
-#     N_init_ABC = np.random.normal(N_ABC, N_ABC/5)
-#     r_init = np.random.normal(r, r/5)
-#     m_init = m
-#     acc += 1
-
-# print(acc)
+t_init_A = np.random.uniform(t_A-t_sd_A, t_A+t_sd_A)
+t_init_B = np.random.uniform(t_B-t_sd_B, t_B+t_sd_B)
+t_init_C = np.random.uniform(t_C-t_sd_C, t_C+t_sd_C)
+t_init_2 = np.random.uniform(t_2-t_sd_2, t_2+t_sd_2)
+t_init_upper = np.random.uniform(t_upper-t_sd_upper, t_upper+t_sd_upper)
+t_init_m = np.random.uniform(0, min([t_B-t_sd_B, (t_C-t_sd_C)-(t_2+t_sd_2)]))
+N_init_AB = np.random.uniform(N_AB-N_sd_AB, N_AB+N_sd_AB)
+N_init_ABC = np.random.uniform(N_ABC-N_sd_ABC, N_ABC+N_sd_ABC)
+r_init = np.random.uniform(r-r_sd, r+r_sd)
+m_init = np.random.uniform(0.0001, 0.5)
 
 dct = {
-    't_A':     [t_init_A,     t_init_A/2, t_init_A*2], 
-    't_B':     [t_init_B,     t_init_B/2, t_init_B*2], 
-    't_C':     [t_init_C,     t_init_C/2, t_init_C*2], 
-    't_2':     [t_init_2,     t_init_2/2, t_init_2*2], 
-    't_upper': [t_init_upper, t_init_upper/2, t_init_upper*2], 
-    't_m':     [t_init_m,     0, min([t_init_B/2, t_init_C/2-t_init_2*2])], 
-    'N_AB':    [N_init_AB,    N_init_AB/2,  N_init_AB*2], 
-    'N_ABC':   [N_init_ABC,   N_init_ABC/2,  N_init_ABC*2], 
-    'r':       [r_init,       r_init/5,  r_init*5],
+    't_A':     [t_init_A,     t_A-t_sd_A, t_A+t_sd_A], 
+    't_B':     [t_init_B,     t_B-t_sd_B, t_B+t_sd_B], 
+    't_C':     [t_init_C,     t_C-t_sd_C, t_C+t_sd_C], 
+    't_2':     [t_init_2,     t_2-t_sd_2, t_2+t_sd_2], 
+    't_upper': [t_init_upper, t_upper-t_sd_upper, t_upper+t_sd_upper], 
+    't_m':     [t_init_m,     0, min([t_B-t_sd_B, (t_C-t_sd_C)-(t_2+t_sd_2)])], 
+    'N_AB':    [N_init_AB,    N_AB-N_sd_AB,  N_AB+N_sd_AB], 
+    'N_ABC':   [N_init_ABC,   N_ABC-N_sd_ABC,  N_ABC+N_sd_ABC], 
+    'r':       [r_init,       r-r_sd,  r+r_sd],
     'm':       [m_init,       0.0001,  0.5]
     }
 
-print(dct)
+for i in dct:
+    exec("x = %s" % (i))
+    print(i, x > dct[i][1], x < dct[i][2])
