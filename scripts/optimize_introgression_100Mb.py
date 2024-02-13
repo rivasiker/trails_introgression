@@ -3,6 +3,7 @@ from trails.optimizer import trans_emiss_calc_introgression
 from trails.cutpoints import cutpoints_ABC, cutpoints_AB
 import numpy as np
 from trails.optimizer import loglik_wrapper_par, write_list, optimizer_introgression
+from trails.read_data import get_obs_state_dct
 import pandas as pd
 import time
 import re
@@ -22,17 +23,18 @@ t_C = float(sys.argv[4])
 t_2 = float(sys.argv[5])
 t_3 = float(sys.argv[6])
 N_AB = float(sys.argv[7])
-N_ABC = float(sys.argv[8])
-r = float(sys.argv[9])
-mu = float(sys.argv[10])
-n_int_AB = int(sys.argv[11])
-n_int_ABC = int(sys.argv[12])
-model = str(sys.argv[13])
+N_BC = float(sys.argv[8])
+N_ABC = float(sys.argv[9])
+r = float(sys.argv[10])
+mu = float(sys.argv[11])
+n_int_AB = int(sys.argv[12])
+n_int_ABC = int(sys.argv[13])
+model = str(sys.argv[14])
 
-t_m = float(sys.argv[14])
-m = float(sys.argv[15])
+t_m = float(sys.argv[15])
+m = float(sys.argv[16])
 
-algorithm = str(sys.argv[16])
+algorithm = str(sys.argv[17])
 
 t_C_prime = t_C-t_2
 t_1 = max([t_A, t_B, t_C_prime])
@@ -48,13 +50,8 @@ t_AB = t_2/N_ref
 cut_AB = t_1+cutpoints_AB(n_int_AB, t_AB, coal_AB)*N_ref
 cut_ABC = t_1+t_2+cutpoints_ABC(n_int_ABC, coal_ABC)*N_ref
 
-transitions, emissions, starting, hidden_states, observed_states = trans_emiss_calc_introgression(
-    t_A, t_B, t_C, t_2, t_upper, t_out, t_m,
-    N_AB, N_ABC, 
-    r, m, n_int_AB, n_int_ABC)
-
-dct_hid = {v: k for k, v in hidden_states.items()}
-dct = {v: k for k, v in observed_states.items()}
+obs_dct = get_obs_state_dct()
+dct = {obs_dct[i]: i for i in range(len(obs_dct))}
 
 ####################### Add demography #######################
 
@@ -64,7 +61,7 @@ demography = msprime.Demography()
 demography.add_population(name="A", initial_size=N_AB, default_sampling_time=t_1-t_A)
 demography.add_population(name="B", initial_size=N_AB, default_sampling_time=t_1-t_B)
 demography.add_population(name="B_anc", initial_size=N_AB, initially_active=False)
-demography.add_population(name="C", initial_size=N_AB, default_sampling_time=t_1+t_2-t_C)
+demography.add_population(name="C", initial_size=N_BC, default_sampling_time=t_1+t_2-t_C)
 demography.add_population(name="D", initial_size=N_AB, default_sampling_time=t_1-t_1)
 demography.add_population(name="AB", initial_size=N_AB)
 demography.add_population(name="ABC", initial_size=N_ABC)
@@ -85,7 +82,6 @@ ts = msprime.sim_ancestry(
     random_seed=seed,
     num_replicates=10
 )
-
 
 ####################### Add mutations #######################
 
@@ -111,18 +107,9 @@ for ts_individual in ts:
 
     E.append(sim_genome)
 
-
 ####################### Optimization #######################
 
 print('Optimizing')
-
-# t_init_1 = np.random.normal(t_1, t_1/5)
-# t_init_2 = np.random.normal(t_2, t_2/5)
-# t_init_upper = np.random.normal(t_upper, t_upper/5)
-# t_init_out = np.random.normal(t_out, t_out/5)
-# N_init = np.random.normal(np.mean([N_AB, N_ABC]), np.mean([N_AB, N_ABC])/5)
-# r_init = np.random.normal(r, r/5)
-# mu_init = mu
 
 t_A = t_A*mu
 t_B = t_B*mu
@@ -132,19 +119,18 @@ t_upper = t_upper*mu
 t_out = t_out*mu
 t_m = t_m*mu
 N_AB = N_AB*mu
+N_BC = N_BC*mu
 N_ABC = N_ABC*mu
 r = r/mu
 
-print(f't_m = {t_m}')
-
 transitions, emissions, starting, hidden_states, observed_states = trans_emiss_calc_introgression(
     t_A, t_B, t_C, t_2, t_upper, t_out, t_m,
-    N_AB, N_ABC,
+    N_AB, N_BC, N_ABC,
     r, m, n_int_AB, n_int_ABC)
 
 loglik = loglik_wrapper_par(transitions, emissions, starting, E)
 
-write_list([-1, t_A, t_B, t_C, t_2, t_upper, t_m, N_AB, N_ABC, r, m, loglik, 0], '../results/sim_{}_{}_{}_{}.csv'.format(n_int_AB, n_int_ABC, seed, model))
+write_list([-1, t_A, t_B, t_C, t_2, t_upper, t_m, N_AB, N_BC, N_ABC, r, m, loglik, 0], '../results/sim_{}_{}_{}_{}.csv'.format(n_int_AB, n_int_ABC, seed, model))
 
 np.random.seed(seed)
 t_init_A = np.random.normal(t_A, t_A/5)
@@ -154,6 +140,7 @@ t_init_2 = np.random.normal(t_2, t_2/5)
 t_init_upper = np.random.normal(t_upper, t_upper/5)
 t_init_m = np.random.normal(t_m, t_m/5)
 N_init_AB = np.random.normal(N_AB, N_AB/5)
+N_init_BC = np.random.normal(N_BC, N_BC/5)
 N_init_ABC = np.random.normal(N_ABC, N_ABC/5)
 r_init = np.random.normal(r, r/5)
 m_init = m
@@ -168,6 +155,7 @@ while (t_init_B/2 <= t_init_m) or ((t_init_C/2-t_init_2*2) <= t_init_m):
     t_init_upper = np.random.normal(t_upper, t_upper/5)
     t_init_m = np.random.normal(t_m, t_m/5)
     N_init_AB = np.random.normal(N_AB, N_AB/5)
+    N_init_BC = np.random.normal(N_BC, N_BC/5)
     N_init_ABC = np.random.normal(N_ABC, N_ABC/5)
     r_init = np.random.normal(r, r/5)
     m_init = m
@@ -183,6 +171,7 @@ dct = {
     't_upper': [t_init_upper, t_init_upper/2, t_init_upper*2], 
     't_m':     [t_init_m,     0, min([t_init_B/2, t_init_C/2-t_init_2*2])], 
     'N_AB':    [N_init_AB,    N_init_AB/2,  N_init_AB*2], 
+    'N_BC':    [N_init_BC,    N_init_BC/2,  N_init_BC*2], 
     'N_ABC':   [N_init_ABC,   N_init_ABC/2,  N_init_ABC*2], 
     'r':       [r_init,       r_init/5,  r_init*5],
     'm':       [m_init,       0.0001,  0.5]

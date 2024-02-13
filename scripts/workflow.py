@@ -7,6 +7,7 @@ gwf = Workflow()
 mu = 2e-8
 g = 25
 N_AB = 10_000*2
+N_BC = 5_000*2
 N_ABC = 10_000*2
 N_ref = N_ABC
 t_1 = 60_000/g
@@ -73,5 +74,5 @@ for n_int_AB in [1]:
                 memory='{}g'.format(n_int_ABC*10),
                 walltime= '7-00:00:00',
                 account='Primategenomes') << f"""
-            python optimize_introgression_100Mb.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
+            python optimize_introgression_100Mb.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_BC} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
             """
