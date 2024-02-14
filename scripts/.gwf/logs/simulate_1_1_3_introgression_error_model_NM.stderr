@@ -1,2 +1,0 @@
-/mnt/primevo/work/iker_rivas_gonzalez/programs/trails/src/trails/optimizer.py:617: RuntimeWarning: Maximum number of iterations has been exceeded.
-  res = minimize(

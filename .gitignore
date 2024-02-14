@@ -1,4 +1,9 @@
-./scripts/__pycache__
-./scripts/.gwf/logs/*.stderr
-./scripts/.gwf/logs/*.stdout
-./scripts/.gwf/logs/*.orig
+scripts/__pycache__
+scripts/.gwf/logs/*.stderr
+scripts/.gwf/logs/*.stdout
+scripts/.gwf/logs/*.orig
+scripts/.gwf/
+scripts/.gwf/update
+scripts/.gwf/slurm-backend-tracked.json
+scripts/.gwfconf.json
+scripts/.gwf/logs/*

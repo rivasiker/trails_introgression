@@ -1,3 +1,0 @@
-2024-02-06 16:49:31,859	INFO worker.py:1715 -- Started a local Ray instance. View the dashboard at [1m[32mhttp://127.0.0.1:8266 [39m[22m
-/mnt/primevo/work/iker_rivas_gonzalez/programs/trails/src/trails/optimizer.py:617: RuntimeWarning: Maximum number of iterations has been exceeded.
-  res = minimize(
