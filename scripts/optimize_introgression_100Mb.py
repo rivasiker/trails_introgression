@@ -172,9 +172,12 @@ dct = {
     'm':       [m_init,       0.0001,  0.5]
     }
 
+x = ""
 for i in dct:
     exec("x = %s" % (i))
     print(i, x > dct[i][1], x < dct[i][2])
+    if (not (x > dct[i][1])) or (not (x < dct[i][2])):
+        sys.exit()
 
 print(dct)
 

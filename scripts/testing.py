@@ -74,3 +74,6 @@ dct = {
 for i in dct:
     exec("x = %s" % (i))
     print(i, x > dct[i][1], x < dct[i][2])
+
+print(0, t_m, min([t_B-t_sd_B, (t_C-t_sd_C)-(t_2+t_sd_2)]))
+print(t_m)
