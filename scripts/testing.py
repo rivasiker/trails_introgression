@@ -20,6 +20,35 @@ n_int_ABC = 1
 t_m = t_1-54_000/g
 m = 0.05
 
+
+
+
+
+
+
+mu = 2e-8
+g = 25
+N_AB = 10_000*2
+N_BC = 5_000*2
+N_ABC = 10_000*2
+N_ref = N_ABC
+t_1 = 62_000/g
+t_2 = 500_000/g-t_1
+t_3 = 6_000_000/g-t_2
+t_A = t_1
+t_B = t_1
+t_C = t_1+t_2
+r = 1e-8
+
+t_m = t_1-54_000/g
+m = 0.05
+
+
+
+
+
+
+
 t_upper = t_3-cutpoints_ABC(n_int_ABC, 1/N_ABC)[-2]
 t_out = t_1+t_2+t_3+2*N_ABC
 
@@ -34,7 +63,7 @@ N_AB = N_AB*mu
 N_ABC = N_ABC*mu
 r = r/mu
 
-fct_big = 25
+fct_big = 20
 fct_sma = 2
 t_sd_A = t_A/fct_sma
 t_sd_B = t_B/fct_sma
