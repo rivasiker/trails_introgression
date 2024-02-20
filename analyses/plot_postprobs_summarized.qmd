@@ -1,0 +1,119 @@
+---
+title: "Plot postprobs"
+format: html
+editor: visual
+---
+
+```{r}
+
+library(tidyverse)
+library(glue)
+n_sites = 1000000
+n_int_AB = 1
+n_int_ABC = 1
+st = 0
+en = n_sites
+# st = 700000 
+# en = 825000
+
+df <- read_csv(glue('tables/df_{n_int_ABC}.csv')) |> 
+  filter(between(start, st, en)) |> 
+  mutate(
+    state = str_sub(state, 2, 2)
+  )
+postprobs_df <- read_csv(glue('tables/postprobs_df_{n_int_ABC}.csv'))
+
+
+df %>%
+    group_by(state) %>%
+    summarize(total = sum(end-start)/n_sites)
+
+postprobs_tab <- 
+    tibble(postprobs_df) %>% 
+    mutate(
+        pos = 0:(n()-1)
+    )  %>% 
+    pivot_longer(-pos) |> 
+  filter(between(pos, st, en)) |> 
+  mutate(
+    name = str_sub(name, 2, 2)
+  ) |> 
+  group_by(pos, name) |> 
+  summarise(value = sum(value))
+
+```
+
+```{r}
+
+true_tab <- tibble(df) %>% 
+    mutate(
+        groupid = data.table::rleid(state)
+    ) %>% 
+    group_by(groupid, state) %>%
+    summarize(
+        start = min(start),
+        end = max(end)
+    )
+
+true_tab %>% 
+    filter(state == 4) %>%
+    mutate(length = end-start)
+
+```
+
+```{r fig.width=12, fig.height=5}
+
+p1 <- postprobs_tab %>%
+  ggplot() +
+  geom_tile(aes(pos, name, fill = value, color = value)) +
+  geom_segment(aes(x = start, xend = end, y = state, yend = state), 
+               color = 'green', size = 3, data = true_tab) +
+  scale_x_continuous(limits = c(st, en), expand = c(0, 0)) +
+  scale_y_discrete(expand = c(0, 0)) +
+  scale_color_viridis_c(option = 'inferno', limits = c(0, 1), name = 'Posterior\nprobability') +
+  scale_fill_viridis_c(option = 'inferno', limits = c(0, 1), name = 'Posterior\nprobability') +
+  xlab('Position') +
+  ylab('Hidden state') 
+
+ggsave(glue('../plots/testing_2.png'), p1, width = 10, height = 5)
+
+p1
+
+```
+
+```{r}
+
+# p1 +
+#   scale_y_discrete(limits = unlist(lapply(0:(n_int_ABC-1), function(x) glue("(4, 0, {x})"))))
+
+```
+
+```{r}
+
+transitions <- read_csv(glue('tables/transitions_{n_int_ABC}.csv'))
+transitions |> 
+  mutate(from = colnames(transitions)) |> 
+  pivot_longer(-from, names_to = 'to') |>
+  mutate(
+    value = ifelse(from == to, NA, value)
+  ) |> 
+  ggplot() +
+  geom_tile(aes(to, from, fill = value)) +
+  # geom_text(aes(to, from, label = round(value, 6))) +
+  scale_fill_viridis_c(trans = 'log') +
+  coord_fixed() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)
+  )
+
+```
+
+```{r}
+
+transitions |> 
+     mutate(from = colnames(transitions)) |> 
+     pivot_longer(-from, names_to = 'to') -> a
+
+min(a$value)
+
+```

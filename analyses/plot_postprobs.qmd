@@ -1,0 +1,176 @@
+---
+title: "Plot postprobs"
+format: html
+editor: visual
+---
+
+```{r}
+
+library(tidyverse)
+library(glue)
+library(ggthemes)
+n_sites = 1000000
+n_int_AB = 1
+n_int_ABC = 1
+st = 0
+en = n_sites
+# st = 700000 
+# en = 825000
+
+df <- read_csv(glue('tables/df_{n_int_ABC}.csv')) |> 
+  filter(between(start, st, en)) 
+postprobs_df <- read_csv(glue('tables/postprobs_df_{n_int_ABC}.csv'))
+
+
+df %>%
+    group_by(state) %>%
+    summarize(total = sum(end-start)/n_sites)
+
+postprobs_tab <- 
+    tibble(postprobs_df) %>% 
+    mutate(
+        pos = 0:(n()-1)
+    )  %>% 
+    pivot_longer(-pos) |> 
+  filter(between(pos, st, en))
+
+```
+
+```{r}
+
+true_tab <- tibble(df) %>% 
+    mutate(
+        groupid = data.table::rleid(state)
+    ) %>% 
+    group_by(groupid, state) %>%
+    summarize(
+        start = min(start),
+        end = max(end)
+    )
+
+true_tab %>% 
+    filter(state == '(4, 0, 0)') %>%
+    mutate(length = end-start)
+
+```
+
+```{r fig.width=12, fig.height=5}
+
+p1 <- postprobs_tab %>%
+  ggplot() +
+  geom_tile(aes(pos, name, fill = value, color = value)) +
+  geom_segment(aes(x = start, xend = end, y = state, yend = state), 
+               color = 'green', size = 3, data = true_tab) +
+  scale_x_continuous(limits = c(st, en), expand = c(0, 0)) +
+  scale_y_discrete(expand = c(0, 0)) +
+  scale_color_viridis_c(option = 'inferno', limits = c(0, 1), name = 'Posterior\nprobability') +
+  scale_fill_viridis_c(option = 'inferno', limits = c(0, 1), name = 'Posterior\nprobability') +
+  xlab('Position') +
+  ylab('Hidden state') 
+
+# ggsave(glue('../plots/postprob_{n_int_ABC}.png'), p1, width = 12, height = 5)
+
+p1
+
+```
+
+```{r}
+
+p2 <- p1 +
+  scale_y_discrete(limits = unlist(lapply(0:(n_int_ABC-1), function(x) glue("(4, 0, {x})"))), expand = c(0, 0))
+
+ggsave(glue('../plots/postprob_zoom_{n_int_ABC}.png'), p2, width = 13, height = 3.5)
+
+```
+
+```{r}
+
+transitions <- read_csv(glue('tables/transitions_{n_int_ABC}.csv'))
+transitions |> 
+  mutate(from = colnames(transitions)) |> 
+  pivot_longer(-from, names_to = 'to') |>
+  mutate(
+    value = ifelse(from == to, NA, value)
+  ) |> 
+  ggplot() +
+  geom_tile(aes(to, from, color = value, fill = value)) +
+  # geom_text(aes(to, from, label = round(value, 6))) +
+  scale_fill_viridis_c(trans = 'log') +
+  scale_color_viridis_c(trans = 'log') +
+  labs(fill = "Probability", color = "Probability") +
+  coord_fixed() +
+  theme_few() +
+  theme(
+    # axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    axis.text = element_blank()
+  )
+
+```
+
+```{r}
+
+transitions |> 
+     mutate(from = colnames(transitions)) |> 
+     pivot_longer(-from, names_to = 'to') -> a
+
+min(a$value)
+
+```
+
+```{r}
+
+transitions <- read_csv(glue('tables/transitions_1.csv'))
+
+trans_tab <- transitions |> 
+  mutate(from = colnames(transitions)) |> 
+  pivot_longer(-from, names_to = 'to') |>
+  filter(
+    from == to
+  ) |> 
+  mutate(
+    starting = c(0.74514198, 0.09303617, 0.09303617, 0.09303617, 0.01530097)
+  ) |> 
+  group_by(from, starting) |> 
+  reframe(
+    len = seq(1, 25000, 10),
+    y = dgeom(len, 1-value)
+  ) 
+
+mean_tab <- transitions |> 
+    mutate(from = colnames(transitions)) |> 
+    pivot_longer(-from, names_to = 'to') |>
+    filter(
+        from == to
+    ) |> 
+  mutate(
+    mea = 1/(1-value)
+  ) 
+  
+trans_tab |> 
+  ggplot() +
+  geom_area(aes(len, y), fill = "darkslategray3") +
+  geom_vline(aes(xintercept = mea), data = mean_tab) +
+  facet_wrap(~from) +
+  theme_few() +
+  labs(x = "Length (bp)", y = "Probability", color = "Type", fill = "Type")
+
+trans_tab |> 
+  filter(
+    from %in% c("(3, 0, 0)", "(4, 0, 0)")
+  ) |>  
+  ggplot() +
+  geom_area(aes(len, y*starting, fill = from)) +
+  geom_vline(aes(xintercept = mea), linewidth = 1.5, data = filter(mean_tab,
+    from %in% c("(3, 0, 0)", "(4, 0, 0)")
+  )) +
+  geom_vline(aes(xintercept = mea, color = from), linewidth = 1.5/2, data = 
+  filter(mean_tab,
+    from %in% c("(3, 0, 0)", "(4, 0, 0)")
+  )) +
+  scale_color_manual(values = c("red", "blue"), labels = c("ILS", "GF")) + 
+  scale_fill_manual(values = c("red", "blue"), labels = c("ILS", "GF")) + 
+  theme_few() +
+  labs(x = "Length (bp)", y = "Probability", color = "Type", fill = "Type")
+
+```
+
