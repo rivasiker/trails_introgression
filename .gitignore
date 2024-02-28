@@ -10,3 +10,4 @@ scripts/.gwf/logs/*
 *.csv
 .DS_Store
 analyses/.Rhistory
+*.pkl
