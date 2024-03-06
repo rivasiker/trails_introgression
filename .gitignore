@@ -7,7 +7,6 @@ scripts/.gwf/update
 scripts/.gwf/slurm-backend-tracked.json
 scripts/.gwfconf.json
 scripts/.gwf/logs/*
-*.csv
 .DS_Store
 analyses/.Rhistory
 *.pkl
