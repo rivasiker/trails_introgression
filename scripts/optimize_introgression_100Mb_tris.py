@@ -134,6 +134,7 @@ write_list([-1, t_A, t_B, t_C, t_2, t_upper, t_m, N_AB, N_BC, N_ABC, r, m, logli
 
 fct_big = 25
 fct_sma = 2
+r = r*4/5
 t_sd_A = t_A/10000
 t_sd_B = t_B/fct_sma
 t_sd_C = t_C/fct_big
