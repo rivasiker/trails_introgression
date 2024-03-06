@@ -86,6 +86,25 @@ for n_int_AB in [1]:
             python optimize_introgression_100Mb_tris.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_BC} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
             """
 
+m = 0.0001
+model = 'nelder_mead_100Mb_cuatris'
+algorithm = 'Nelder-Mead'
+for n_int_AB in [1]:
+    for n_int_ABC in [5]:
+        if n_int_ABC == 1: mem = 40
+        elif n_int_ABC == 3: mem = 40
+        elif n_int_ABC == 5: mem = 40
+        for seed in range(1, 6):
+            gwf.target('simulate_{}_{}_{}_{}'.format(n_int_AB, n_int_ABC, seed, model),
+                inputs=['optimize_introgression.py'],
+                outputs=['../results/{}_{}_{}_{}_{}.csv'.format(x, n_int_AB, n_int_ABC, seed, model) for x in ['sim']],
+                cores=8,
+                memory=f'{mem}g',
+                walltime= '7-00:00:00',
+                account='Primategenomes') << f"""
+            python optimize_introgression_100Mb_cuatris.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_BC} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
+            """
+
 model = 'nelder_mead_100Mb_no_introgression'
 algorithm = 'Nelder-Mead'
 for n_int_AB in [1]:
