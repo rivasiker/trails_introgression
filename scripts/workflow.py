@@ -27,7 +27,7 @@ t_B = t_1
 t_C = t_1+t_2
  
 
-
+# m=0.05, introgression simulation, introgression model
 model = 'nelder_mead_100Mb'
 algorithm = 'Nelder-Mead'
 for n_int_AB in [1]:
@@ -46,7 +46,7 @@ for n_int_AB in [1]:
             python optimize_introgression_100Mb.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_BC} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
             """
 
-
+# m=0.25, introgression simulation, introgression model
 m = 0.25
 model = 'nelder_mead_100Mb_bis'
 algorithm = 'Nelder-Mead'
@@ -66,7 +66,7 @@ for n_int_AB in [1]:
             python optimize_introgression_100Mb.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_BC} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
             """
 
-
+# m=0.05, introgression simulation, introgression model, fixed t_A
 m = 0.05
 model = 'nelder_mead_100Mb_tris'
 algorithm = 'Nelder-Mead'
@@ -86,6 +86,7 @@ for n_int_AB in [1]:
             python optimize_introgression_100Mb_tris.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_BC} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
             """
 
+# m=0, no-introgression simulation, introgression model
 m = 0.0001
 model = 'nelder_mead_100Mb_cuatris'
 algorithm = 'Nelder-Mead'
@@ -105,6 +106,7 @@ for n_int_AB in [1]:
             python optimize_introgression_100Mb_cuatris.py {seed} {t_A} {t_B} {t_C} {t_2} {t_3} {N_AB} {N_BC} {N_ABC} {r} {mu} {n_int_AB} {n_int_ABC} {model} {t_m} {m} {algorithm}
             """
 
+# m=0, no-introgression simulation, no-introgression model
 model = 'nelder_mead_100Mb_no_introgression'
 algorithm = 'Nelder-Mead'
 for n_int_AB in [1]:
